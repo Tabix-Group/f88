@@ -2,7 +2,8 @@
 
 import Link from "next/link"
 import { useState, useEffect } from "react"
-import { FaHome, FaGraduationCap, FaSignOutAlt, FaBars, FaTimes, FaRocket } from "react-icons/fa"
+import { FaHome, FaGraduationCap, FaSignOutAlt, FaBars, FaTimes } from "react-icons/fa"
+import { FaHandsHelping } from "react-icons/fa"
 
 export default function Layout({ children }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
@@ -78,7 +79,7 @@ export default function Layout({ children }) {
           }}
         >
           {/* Logo */}
-          <Link href="/dashboard" style={{ textDecoration: "none" }}>
+              <Link href="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none', marginLeft: '2rem', gap: 8 }}>
             <div
               style={{
                 display: "flex",
@@ -87,18 +88,7 @@ export default function Layout({ children }) {
                 transition: "transform 0.2s",
               }}
             >
-              <div
-                style={{
-                  background: "linear-gradient(135deg, #06B6D4, #8B5CF6)",
-                  borderRadius: "8px",
-                  padding: "0.5rem",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <FaRocket size={20} color="white" />
-              </div>
+                  {/* Icono cálido ya está al lado de f88 */}
               <span
                 style={{
                   fontWeight: 800,
@@ -113,6 +103,7 @@ export default function Layout({ children }) {
               >
                 f88
               </span>
+                  <FaHandsHelping size={24} color="#f7c873" />
             </div>
           </Link>
 

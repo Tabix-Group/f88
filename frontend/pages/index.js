@@ -1,6 +1,6 @@
 import Layout from '../components/Layout';
 import Link from 'next/link';
-import { FaUserTie, FaRegUser, FaArrowRight, FaShieldAlt, FaRocket, FaHeart } from 'react-icons/fa';
+import { FaHandsHelping, FaRegUser, FaArrowRight, FaShieldAlt, FaHeart, FaChartLine } from 'react-icons/fa';
 
 export default function Home() {
   return (
@@ -48,7 +48,7 @@ export default function Home() {
             marginBottom: '2rem',
             animation: 'bounce 3s infinite'
           }}>
-            <FaUserTie size={48} color="#06B6D4" />
+            <FaHandsHelping size={48} color="#f7c873" />
           </div>
           
           <h1 style={{
@@ -141,8 +141,8 @@ export default function Home() {
               <div style={{fontSize: '0.875rem', color: 'rgba(248, 250, 252, 0.7)'}}>Seguro</div>
             </div>
             <div style={{textAlign: 'center', opacity: 0.8}}>
-              <FaRocket size={24} color="#8B5CF6" style={{marginBottom: '0.5rem'}} />
-              <div style={{fontSize: '0.875rem', color: 'rgba(248, 250, 252, 0.7)'}}>Efectivo</div>
+            <FaChartLine size={24} color="#22d3ee" style={{marginBottom: '0.5rem'}} />
+            <div style={{fontSize: '0.875rem', color: 'rgba(248, 250, 252, 0.7)'}}>Crecimiento</div>
             </div>
             <div style={{textAlign: 'center', opacity: 0.8}}>
               <FaHeart size={24} color="#06B6D4" style={{marginBottom: '0.5rem'}} />
