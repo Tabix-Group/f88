@@ -1,480 +1,80 @@
-"use client"
 
-import { useEffect, useState, useRef } from "react"
-import axios from "axios"
-import Layout from "../components/Layout"
-import Card from "../components/Card"
-import Flex from "../components/Flex"
-import { FaPlay, FaPause, FaStepBackward, FaStepForward, FaVolumeUp, FaRobot, FaBookOpen } from "react-icons/fa"
+
+import CoachBox from '../components/CoachBox';
+import AudioBook from '../components/AudioBook';
+import Layout from '../components/Layout';
+import { useState } from 'react';
+
+const CHAPTER_TITLE = 'La fortaleza emocional es esa energía de autocontrol sobre la reacción inminente de tus emociones';
+
 
 export default function Curso() {
-  const [chapters, setChapters] = useState([])
-  const [current, setCurrent] = useState(0)
-  const [playing, setPlaying] = useState(false)
-  const [question, setQuestion] = useState("")
-  const [answer, setAnswer] = useState("")
-  const [loading, setLoading] = useState(false)
-  const [progress, setProgress] = useState(0)
-  const audioRef = useRef()
+  const [progress, setProgress] = useState(0);
+  const [isPaused, setIsPaused] = useState(true);
+  const [question, setQuestion] = useState("");
+  const [answer, setAnswer] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [currentText, setCurrentText] = useState("");
 
-  useEffect(() => {
-    axios.get("http://localhost:4000/api/chapters").then((res) => setChapters(res.data))
-  }, [])
+  // Recibe el progreso desde AudioBook (en porcentaje)
+  const handleProgress = (percent) => {
+    setProgress(percent);
+  };
 
-  const handlePlay = () => {
-    setPlaying(true)
-    audioRef.current.play()
-  }
+  // Recibe el estado de pausa y el texto sincronizado actual
+  const handleAudioState = (paused, text) => {
+    setIsPaused(paused);
+    setCurrentText(text);
+  };
 
-  const handlePause = () => {
-    setPlaying(false)
-    audioRef.current.pause()
-  }
-
-  const handleNext = () => {
-    setCurrent((c) => Math.min(c + 1, chapters.length - 1))
-    setPlaying(false)
-    setAnswer("")
-    setProgress(0)
-  }
-
-  const handlePrev = () => {
-    setCurrent((c) => Math.max(c - 1, 0))
-    setPlaying(false)
-    setAnswer("")
-    setProgress(0)
-  }
-
+  // Lógica para preguntar al coach
   const handleAsk = async () => {
-    if (!question.trim()) return
-
-    setLoading(true)
+    if (!question.trim()) return;
+    setLoading(true);
+    setAnswer("");
     try {
-      const res = await axios.post("http://localhost:4000/api/chat", { question })
-      setAnswer(res.data.answer)
-    } catch (error) {
-      setAnswer("Lo siento, hubo un error al procesar tu pregunta. Intenta nuevamente.")
+      const res = await fetch("http://localhost:4000/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ question })
+      });
+      const data = await res.json();
+      setAnswer(data.answer);
+    } catch (e) {
+      setAnswer("Error al consultar al Coach IA");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
-
-  const handleTimeUpdate = () => {
-    if (audioRef.current) {
-      const currentTime = audioRef.current.currentTime
-      const duration = audioRef.current.duration
-      setProgress((currentTime / duration) * 100)
-    }
-  }
-
-  if (!chapters.length) {
-    return (
-      <Layout>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            minHeight: "60vh",
-            flexDirection: "column",
-            gap: "1rem",
-          }}
-        >
-          <div
-            style={{
-              width: "50px",
-              height: "50px",
-              border: "3px solid rgba(6, 182, 212, 0.3)",
-              borderTop: "3px solid #06B6D4",
-              borderRadius: "50%",
-              animation: "spin 1s linear infinite",
-            }}
-          ></div>
-          <p style={{ color: "rgba(248, 250, 252, 0.7)", fontSize: "1.125rem" }}>Cargando contenido del curso...</p>
-        </div>
-      </Layout>
-    )
-  }
-
-  const chapter = chapters[current]
+  };
 
   return (
     <Layout>
-      <div
-        style={{
-          textAlign: "center",
-          marginBottom: "2rem",
-          animation: "fadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1)",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: "1rem",
-            marginBottom: "1rem",
-          }}
-        >
-          <FaBookOpen size={32} color="#06B6D4" />
-          <h2
-            style={{
-              background: "linear-gradient(135deg, #F8FAFC 0%, #06B6D4 50%, #8B5CF6 100%)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              backgroundClip: "text",
-              fontWeight: 800,
-              fontSize: "2rem",
-              margin: 0,
-            }}
-          >
-            {chapter.title}
-          </h2>
+      <div style={{maxWidth:700,margin:'2rem auto',background:'rgba(24,31,42,0.98)',borderRadius:16,boxShadow:'0 2px 16px rgba(24,49,83,0.18)',padding:'2.5rem 2rem 1.5rem 2rem'}}>
+        <h1 style={{textAlign:'center',marginBottom:'2rem',fontWeight:800,fontSize:'1.35rem',color:'#F8FAFC',letterSpacing:'-0.01em',lineHeight:1.2}}>{CHAPTER_TITLE}</h1>
+        <div style={{marginBottom:'1.5rem',textAlign:'center'}}>
+          <div style={{height:8,background:'#22293a',borderRadius:4,overflow:'hidden',margin:'0 auto 8px',maxWidth:400}}>
+            <div style={{width:`${progress}%`,height:8,background:'linear-gradient(90deg,#06B6D4,#8B5CF6)',borderRadius:4,transition:'width 0.3s'}}></div>
+          </div>
+          <div style={{color:'#06B6D4',fontWeight:700,fontSize:'1.15rem',marginTop:4,letterSpacing:'0.01em'}}>{Math.round(progress)}% completado</div>
         </div>
-
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: "1rem",
-            color: "rgba(248, 250, 252, 0.7)",
-            fontSize: "0.95rem",
-          }}
-        >
-          <span>
-            Capítulo {current + 1} de {chapters.length}
-          </span>
-          <span>•</span>
-          <span>{Math.round(progress)}% completado</span>
-        </div>
-      </div>
-
-      <Flex
-        style={{
-          marginTop: "2rem",
-          justifyContent: "center",
-          alignItems: "flex-start",
-          gap: "2rem",
-          flexWrap: "wrap",
-        }}
-      >
-        {/* Content Card */}
-        <Card
-          style={{
-            maxWidth: "500px",
-            minHeight: "400px",
-            background: "rgba(255, 255, 255, 0.08)",
-            border: "1px solid rgba(255, 255, 255, 0.15)",
-            boxShadow: "0 8px 32px rgba(0, 0, 0, 0.15)",
-            animation: "fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.2s both",
-          }}
-        >
-          <div
-            style={{
-              background: "linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(139, 92, 246, 0.1))",
-              borderRadius: "12px",
-              padding: "1.5rem",
-              marginBottom: "1.5rem",
-              border: "1px solid rgba(255, 255, 255, 0.1)",
-            }}
-          >
-            <p
-              style={{
-                whiteSpace: "pre-line",
-                color: "#F8FAFC",
-                fontSize: "1.125rem",
-                lineHeight: 1.7,
-                margin: 0,
-              }}
-            >
-              {chapter.text}
-            </p>
-          </div>
-
-          {/* Progress Bar */}
-          <div
-            style={{
-              background: "rgba(255, 255, 255, 0.1)",
-              borderRadius: "10px",
-              height: "6px",
-              marginBottom: "1rem",
-              overflow: "hidden",
-            }}
-          >
-            <div
-              style={{
-                background: "linear-gradient(90deg, #06B6D4, #8B5CF6)",
-                height: "100%",
-                width: `${progress}%`,
-                borderRadius: "10px",
-                transition: "width 0.3s ease",
-              }}
-            ></div>
-          </div>
-        </Card>
-
-        {/* Audio Player Card */}
-        <Card
-          style={{
-            minWidth: "350px",
-            maxWidth: "400px",
-            background: "rgba(255, 255, 255, 0.08)",
-            border: "1px solid rgba(255, 255, 255, 0.15)",
-            boxShadow: "0 8px 32px rgba(0, 0, 0, 0.15)",
-            animation: "fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.4s both",
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "1rem",
-              marginBottom: "2rem",
-            }}
-          >
-            <div
-              style={{
-                background: "linear-gradient(135deg, #8B5CF6, #06B6D4)",
-                borderRadius: "50%",
-                padding: "0.75rem",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <FaVolumeUp size={20} color="white" />
-            </div>
-            <h3
-              style={{
-                color: "#F8FAFC",
-                fontWeight: 600,
-                fontSize: "1.25rem",
-                margin: 0,
-              }}
-            >
-              Audio del Capítulo
-            </h3>
-          </div>
-
-          <audio
-            ref={audioRef}
-            src={chapter.audio}
-            onPlay={() => setPlaying(true)}
-            onPause={() => setPlaying(false)}
-            onTimeUpdate={handleTimeUpdate}
-            style={{ display: "none" }}
+        <div style={{margin:'2rem 0'}}>
+          <AudioBook
+            audioSrc="http://localhost:4100/audios/zaratustra.mp3"
+            onProgress={handleProgress}
+            onAudioState={handleAudioState}
           />
-
-          {/* Custom Audio Controls */}
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              gap: "1rem",
-              marginBottom: "2rem",
-            }}
-          >
-            <button
-              onClick={handlePrev}
-              disabled={current === 0}
-              style={{
-                background: current === 0 ? "rgba(255, 255, 255, 0.1)" : "rgba(255, 255, 255, 0.15)",
-                border: "1px solid rgba(255, 255, 255, 0.2)",
-                borderRadius: "50%",
-                padding: "0.75rem",
-                cursor: current === 0 ? "not-allowed" : "pointer",
-                transition: "all 0.3s",
-                opacity: current === 0 ? 0.5 : 1,
-              }}
-            >
-              <FaStepBackward size={16} color="#F8FAFC" />
-            </button>
-
-            <button
-              onClick={playing ? handlePause : handlePlay}
-              style={{
-                background: "linear-gradient(135deg, #06B6D4, #8B5CF6)",
-                border: "none",
-                borderRadius: "50%",
-                padding: "1rem",
-                cursor: "pointer",
-                transition: "all 0.3s",
-                boxShadow: "0 4px 15px rgba(6, 182, 212, 0.3)",
-              }}
-            >
-              {playing ? <FaPause size={20} color="white" /> : <FaPlay size={20} color="white" />}
-            </button>
-
-            <button
-              onClick={handleNext}
-              disabled={current === chapters.length - 1}
-              style={{
-                background: current === chapters.length - 1 ? "rgba(255, 255, 255, 0.1)" : "rgba(255, 255, 255, 0.15)",
-                border: "1px solid rgba(255, 255, 255, 0.2)",
-                borderRadius: "50%",
-                padding: "0.75rem",
-                cursor: current === chapters.length - 1 ? "not-allowed" : "pointer",
-                transition: "all 0.3s",
-                opacity: current === chapters.length - 1 ? 0.5 : 1,
-              }}
-            >
-              <FaStepForward size={16} color="#F8FAFC" />
-            </button>
-          </div>
-
-          {/* Coach AI Section */}
-          {!playing && (
-            <div
-              style={{
-                background: "rgba(255, 255, 255, 0.05)",
-                borderRadius: "16px",
-                padding: "1.5rem",
-                border: "1px solid rgba(255, 255, 255, 0.1)",
-                animation: "fadeIn 0.5s ease-in-out",
-              }}
-            >
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "0.75rem",
-                  marginBottom: "1rem",
-                }}
-              >
-                <FaRobot size={20} color="#06B6D4" />
-                <h4
-                  style={{
-                    color: "#F8FAFC",
-                    fontWeight: 600,
-                    fontSize: "1rem",
-                    margin: 0,
-                  }}
-                >
-                  Coach IA
-                </h4>
-              </div>
-
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "1rem",
-                }}
-              >
-                <input
-                  type="text"
-                  placeholder="Pregunta sobre este capítulo..."
-                  value={question}
-                  onChange={(e) => setQuestion(e.target.value)}
-                  onKeyPress={(e) => e.key === "Enter" && handleAsk()}
-                  style={{
-                    background: "rgba(255, 255, 255, 0.1)",
-                    border: "1px solid rgba(255, 255, 255, 0.2)",
-                    borderRadius: "8px",
-                    padding: "0.75rem",
-                    color: "#F8FAFC",
-                    fontSize: "0.9rem",
-                    width: "100%",
-                  }}
-                />
-
-                <button
-                  onClick={handleAsk}
-                  disabled={loading || !question.trim()}
-                  style={{
-                    background:
-                      loading || !question.trim()
-                        ? "rgba(6, 182, 212, 0.3)"
-                        : "linear-gradient(135deg, #06B6D4, #8B5CF6)",
-                    color: "white",
-                    border: "none",
-                    borderRadius: "8px",
-                    padding: "0.75rem 1rem",
-                    fontSize: "0.9rem",
-                    fontWeight: 600,
-                    cursor: loading || !question.trim() ? "not-allowed" : "pointer",
-                    transition: "all 0.3s",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: "0.5rem",
-                  }}
-                >
-                  {loading ? (
-                    <div
-                      style={{
-                        width: "16px",
-                        height: "16px",
-                        border: "2px solid rgba(255, 255, 255, 0.3)",
-                        borderTop: "2px solid white",
-                        borderRadius: "50%",
-                        animation: "spin 1s linear infinite",
-                      }}
-                    ></div>
-                  ) : (
-                    "Preguntar"
-                  )}
-                </button>
-
-                {answer && (
-                  <div
-                    style={{
-                      background: "rgba(6, 182, 212, 0.1)",
-                      border: "1px solid rgba(6, 182, 212, 0.2)",
-                      borderRadius: "8px",
-                      padding: "1rem",
-                      marginTop: "0.5rem",
-                      animation: "fadeIn 0.5s ease-in-out",
-                    }}
-                  >
-                    <p
-                      style={{
-                        color: "#F8FAFC",
-                        fontSize: "0.9rem",
-                        lineHeight: 1.6,
-                        margin: 0,
-                      }}
-                    >
-                      {answer}
-                    </p>
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
-        </Card>
-      </Flex>
-
-      <style jsx global>{`
-        @keyframes spin {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-        
-        @keyframes fadeIn {
-          from { 
-            opacity: 0; 
-            transform: translateY(10px);
-          }
-          to { 
-            opacity: 1; 
-            transform: translateY(0);
-          }
-        }
-        
-        @keyframes fadeInUp {
-          from { 
-            opacity: 0; 
-            transform: translateY(30px);
-          }
-          to { 
-            opacity: 1; 
-            transform: translateY(0);
-          }
-        }
-      `}</style>
+        </div>
+        {isPaused && (
+          <CoachBox
+            question={question}
+            setQuestion={setQuestion}
+            answer={answer}
+            onAsk={handleAsk}
+            loading={loading}
+            context={currentText}
+          />
+        )}
+      </div>
     </Layout>
-  )
+  );
 }

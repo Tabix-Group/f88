@@ -52,6 +52,9 @@ Proyecto MVP para libro y curso online (coaching, desarrollo personal).
    # Si usas un servidor estático para /audios
    npx serve ./public/audios -l 5000
    # Acceso: http://localhost:5000
+
+   O
+   cd backend; node src/server.js
    ```
 
 ---
