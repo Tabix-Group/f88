@@ -30,12 +30,16 @@
   --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+h2 {
+  font-size: 2.3rem;
+  font-weight: 700;
+  color: #fff;
+  text-align: center;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.10);
+  margin-bottom: 2.2rem;
+  font-family: 'Montserrat', 'Inter', 'Segoe UI', Arial, sans-serif;
+  letter-spacing: -0.01em;
 }
-
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   background: linear-gradient(135deg, var(--primary-900) 0%, var(--primary-800) 50%, var(--primary-700) 100%);
@@ -161,20 +165,22 @@ input[type="text"]:focus {
 }
 
 h1, h2, h3, h4 {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Montserrat', 'Inter', 'Segoe UI', Arial, sans-serif;
   font-weight: 700;
-  color: var(--primary-50);
-  letter-spacing: -0.025em;
-  line-height: 1.2;
+  color: #fff;
+  letter-spacing: -0.01em;
+  line-height: 1.13;
 }
 
 h1 {
-  font-size: 2.5rem;
-  font-weight: 800;
-  background: linear-gradient(135deg, var(--primary-50) 0%, var(--accent-300) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  font-size: 3.1rem;
+  font-weight: 700;
+  color: #fff;
+  text-align: center;
+  text-shadow: 0 3px 16px rgba(0,0,0,0.13);
+  margin-bottom: 1.2rem;
+  line-height: 1.13;
+  letter-spacing: -0.01em;
 }
 
 h2 {
@@ -182,24 +188,7 @@ h2 {
   font-weight: 700;
 }
 
-h3 {
-  font-size: 1.5rem;
-  font-weight: 600;
-}
-
-.card {
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
-  border-radius: 20px;
-  backdrop-filter: blur(20px);
-  padding: 2rem;
-  min-width: 300px;
-  box-shadow: var(--glass-shadow);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-  overflow: hidden;
-}
-
+  /* ...existing code... */
 .card::before {
   content: '';
   position: absolute;
