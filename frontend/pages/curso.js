@@ -1,9 +1,13 @@
 
 
+
 import CoachBox from '../components/CoachBox';
 import AudioBook from '../components/AudioBook';
 import Layout from '../components/Layout';
 import { useState } from 'react';
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+const AUDIO_URL = process.env.NEXT_PUBLIC_AUDIO_URL || 'http://localhost:4100';
 
 const CHAPTER_TITLE = 'La fortaleza emocional es esa energía de autocontrol sobre la reacción inminente de tus emociones';
 
@@ -33,7 +37,7 @@ export default function Curso() {
     setLoading(true);
     setAnswer("");
     try {
-      const res = await fetch("http://localhost:4000/api/chat", {
+      const res = await fetch(`${API_URL}/api/chat`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ question })
@@ -58,11 +62,11 @@ export default function Curso() {
           <div style={{color:'#06B6D4',fontWeight:700,fontSize:'1.15rem',marginTop:4,letterSpacing:'0.01em'}}>{Math.round(progress)}% completado</div>
         </div>
         <div style={{margin:'2rem 0'}}>
-          <AudioBook
-            audioSrc="http://localhost:4100/audios/zaratustra.mp3"
-            onProgress={handleProgress}
-            onAudioState={handleAudioState}
-          />
+        <AudioBook
+          audioSrc={`${AUDIO_URL}/audios/zaratustra.mp3`}
+          onProgress={handleProgress}
+          onAudioState={handleAudioState}
+        />
         </div>
         {isPaused && (
           <CoachBox

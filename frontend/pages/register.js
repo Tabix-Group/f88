@@ -2,6 +2,8 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import axios from 'axios';
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
 import Layout from '../components/Layout';
 import Card from '../components/Card';
 import { FaUserPlus, FaEye, FaEyeSlash, FaEnvelope, FaLock } from 'react-icons/fa';
@@ -20,7 +22,7 @@ export default function Register() {
     setError('');
     
     try {
-      await axios.post('http://localhost:4000/api/auth/register', { email, password });
+      await axios.post(`${API_URL}/api/auth/register`, { email, password });
       router.push('/login');
     } catch (err) {
       setError('Error al registrar. Intenta nuevamente.');

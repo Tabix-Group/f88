@@ -31,7 +31,9 @@ const transcript = [
   }
 ];
 
-export default function AudioBook({ audioSrc = "http://localhost:5000/tu-audio.mp3", onProgress, onAudioState }) {
+// Usar variable de entorno para la URL base de audios
+const AUDIO_BASE_URL = process.env.NEXT_PUBLIC_AUDIO_URL || "http://localhost:4100";
+export default function AudioBook({ audioSrc = `${AUDIO_BASE_URL}/audios/zaratustra.mp3`, onProgress, onAudioState }) {
   const audioRef = useRef();
   const [current, setCurrent] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);

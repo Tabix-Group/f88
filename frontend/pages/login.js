@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import axios from 'axios';
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
 import Link from 'next/link';
 import Layout from '../components/Layout';
 import Card from '../components/Card';
@@ -20,7 +22,7 @@ export default function Login() {
     setError('');
     
     try {
-      const res = await axios.post('http://localhost:4000/api/auth/login', { email, password });
+      const res = await axios.post(`${API_URL}/api/auth/login`, { email, password });
       localStorage.setItem('token', res.data.token);
       router.push('/dashboard');
     } catch (err) {
