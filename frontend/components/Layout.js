@@ -31,7 +31,7 @@ export default function Layout(props) {
   return (
     <>
       <Head>
-        <title>{title || 'F88 Academia'}</title>
+        <title>{title || 'F88 | Academia FORTITUDE'}</title>
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
       </Head>
       <div>
