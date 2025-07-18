@@ -64,9 +64,8 @@ Home.title = "Inicio | F88 Academia";
             textAlign: 'center',
             textShadow: '0 3px 16px rgba(0,0,0,0.13)',
           }}>
-            Hombres y Mujeres<br />
             <span style={{fontWeight:700, letterSpacing:'0.01em', fontSize:'3.1rem', textTransform:'uppercase', fontFamily:'Poppins, Inter, Segoe UI, Arial, sans-serif'}}>
-              FUERTES
+              FORTITUDE
             </span>
           </h1>
           <p style={{
