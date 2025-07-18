@@ -5,7 +5,7 @@ import Flex from '../components/Flex';
 import { FaShieldAlt, FaHeart, FaChartLine, FaFacebook, FaInstagram, FaYoutube } from 'react-icons/fa';
 
 export default function Home() {
-Home.title = "Inicio | F88 Academia";
+Home.title = "Inicio | F88 | Academia FORTITUDE";
   return (
     <Layout>
       {/* HERO mejorado con burbujas decorativas */}
@@ -421,7 +421,7 @@ Home.title = "Inicio | F88 Academia";
                     <path d="M14 4L24 24H4L14 4Z" fill="#06B6D4" />
                   </svg>
                 </div>
-                <span style={{fontWeight:500,fontSize:'2.1rem',letterSpacing:'-0.02em',color:'#fff'}}>F88 | Academia FORTITUDE</span>
+                <span style={{fontWeight:500,fontSize:'2.1rem',letterSpacing:'-0.02em',color:'#fff'}}>F88</span>
               </div>
               <div style={{fontWeight:600,fontSize:'1.15rem',marginBottom:'1.2rem',color:'#e5e7eb'}}>Coaching y Comunidad</div>
               <div style={{fontSize:'1rem',color:'#e5e7eb',marginBottom:'0.5rem'}}>Coaching individual y grupal</div>
