@@ -43,7 +43,6 @@ __pycache__/
 
 # Audios/public uploads
 /frontend/public/audios/
-/backend/public/audios/
 
 # Others
 *.swp

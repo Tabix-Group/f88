@@ -2,9 +2,11 @@ import express from 'express';
 const router = express.Router();
 
 
-// Simulación de capítulos
+
+// Usar variable de entorno para la URL base de audios
+const AUDIO_BASE_URL = process.env.AUDIO_BASE_URL || 'http://localhost:4100';
 const chapters = [
-  { id: 1, title: 'Capítulo 1', text: 'Así habló Zaratustra...', audio: 'http://localhost:4100/audios/zaratustra.mp3' }
+  { id: 1, title: 'Capítulo 1', text: 'Así habló Zaratustra...', audio: `${AUDIO_BASE_URL}/audios/zaratustra.mp3` }
 ];
 
 router.get('/', (req, res) => {

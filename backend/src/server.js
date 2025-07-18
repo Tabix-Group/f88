@@ -5,8 +5,13 @@ import path from 'path';
 const app = express();
 const __dirname = path.resolve();
 
-app.use('/audios', express.static(path.join(__dirname, 'public/audios')));
+// Permitir configurar la ruta de audios y el puerto por variable de entorno
+const AUDIO_PATH = process.env.AUDIO_PATH || path.join(__dirname, 'public/audios');
+const AUDIO_ROUTE = process.env.AUDIO_ROUTE || '/audios';
+const AUDIO_PORT = process.env.AUDIO_PORT || 4100;
 
-app.listen(4100, () => {
-  console.log('Servidor de audios corriendo en puerto 4100');
+app.use(AUDIO_ROUTE, express.static(AUDIO_PATH));
+
+app.listen(AUDIO_PORT, () => {
+  console.log(`Servidor de audios corriendo en puerto ${AUDIO_PORT}`);
 });
